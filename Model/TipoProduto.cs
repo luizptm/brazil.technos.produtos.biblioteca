@@ -10,7 +10,7 @@ namespace Model
     public class TipoProduto
     {
         [Required]
-        public Int32 Id { get; set; }
+        public Int32? Id { get; set; }
         [Required]
         public string Nome { get; set; }
     }

@@ -2,8 +2,6 @@
 using Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Controller
 {
@@ -43,6 +41,12 @@ namespace Controller
         public Boolean Salvar(Produto produto)
         {
             var result = this.data.Salvar(produto);
+            return result;
+        }
+
+        public Boolean Excluir(string codigo)
+        {
+            var result = this.data.Excluir(codigo);
             return result;
         }
 

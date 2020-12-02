@@ -1,9 +1,7 @@
 ﻿using Controller;
-using Data;
 using Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AppService
 {
@@ -41,9 +39,15 @@ namespace AppService
             return result;
         }
 
+        public Boolean Excluir(string codigo)
+        {
+            var result = this.controller.Excluir(codigo);
+            return result;
+        }
+
         public Boolean Excluir(Produto produto)
         {
-            var result = this.controller.Salvar(produto);
+            var result = this.controller.Excluir(produto);
             return result;
         }
     }

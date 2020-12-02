@@ -15,6 +15,7 @@ namespace Model
         public string Marca { get; set; }
 
         public double Preco { get; set; }
+        [Required]
         public DateTime DataCadastro { get; set; }
         public DateTime DataLancamento { get; set; }
         public TipoProduto TipoProduto { get; set; }

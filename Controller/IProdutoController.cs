@@ -2,7 +2,6 @@
 using Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Controller
 {
@@ -17,6 +16,8 @@ namespace Controller
         List<Produto> Find(Produto produto);
 
         Boolean Salvar(Produto produto);
+
+        Boolean Excluir(string codigo);
 
         Boolean Excluir(Produto produto);
     }

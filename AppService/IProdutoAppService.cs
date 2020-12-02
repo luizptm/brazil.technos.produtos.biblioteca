@@ -15,6 +15,8 @@ namespace AppService
 
         Boolean Salvar(Produto produto);
 
+        Boolean Excluir(string codigo);
+
         Boolean Excluir(Produto produto);
     }
 }
