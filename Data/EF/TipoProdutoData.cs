@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 
@@ -36,9 +37,16 @@ namespace Data
             return data;
         }
 
-        public Boolean Salvar(TipoProduto produto)
+        public Boolean Salvar(TipoProduto tipoProduto)
         {
-            this.db.TipoProdutos.Add(produto);
+            if (tipoProduto.Id == null)
+            {
+                this.db.TipoProdutos.Add(tipoProduto);
+            }
+            else
+            {
+                db.Entry(tipoProduto).State = EntityState.Modified;
+            }
             db.SaveChanges();
             return true;
         }
@@ -56,6 +64,14 @@ namespace Data
             this.db.TipoProdutos.Remove(produto);
             db.SaveChanges();
             return true;
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
         }
     }
 }

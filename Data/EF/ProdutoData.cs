@@ -1,6 +1,7 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 
@@ -57,7 +58,15 @@ namespace Data
 
         public Boolean Salvar(Produto produto)
         {
-            this.db.Produtos.Add(produto);
+            if (produto.Codigo == null)
+            {
+                produto.DataCadastro = new DateTime();
+                this.db.Produtos.Add(produto);
+            }
+            else
+            {
+                db.Entry(produto).State = EntityState.Modified;
+            }
             db.SaveChanges();
             return true;
         }
@@ -75,6 +84,14 @@ namespace Data
             this.db.Produtos.Remove(produto);
             db.SaveChanges();
             return true;
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
         }
     }
 }
