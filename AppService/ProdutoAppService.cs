@@ -10,10 +10,11 @@ namespace AppService
 
     public class ProdutoAppService : IProdutoAppService
     {
-        IProdutoController controller;
+        protected readonly IProdutoController controller;
 
         public ProdutoAppService(IProdutoController controller)
         {
+            this.controller = controller;
         }
 
         public Produto Get(string codigo)
@@ -22,11 +23,17 @@ namespace AppService
             return result;
         }
 
+        public List<Produto> GetAll()
+        {
+            var result = this.controller.GetAll();
+            return result;
+        }
+
         public List<Produto> Find(Produto produto)
         {
             var result = this.controller.Find(produto);
             return result;
-    }
+        }
 
         public Boolean Salvar(Produto produto)
         {

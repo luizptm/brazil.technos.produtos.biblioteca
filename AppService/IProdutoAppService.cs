@@ -1,18 +1,15 @@
-﻿using Data;
-using Model;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Controller
+namespace AppService
 {
-    public interface IProdutoController
+    public interface IProdutoAppService
     {
         Produto Get(string codigo);
 
         List<Produto> GetAll();
-
-        PagedResultDto<Produto> GetPagedData(int maxCountReg, int skip);
 
         List<Produto> Find(Produto produto);
 

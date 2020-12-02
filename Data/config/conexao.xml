@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<connectionStrings>
+  <add name="GrupoTechnos" connectionString="Data Source=LAPTOP-QLMD3GVJ;Initial Catalog=GrupoTechnos;Integrated Security=True" providerName="System.Data.SqlClient"/>
+</connectionStrings>

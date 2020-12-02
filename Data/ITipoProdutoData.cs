@@ -13,6 +13,8 @@ namespace Data
 
         public Boolean Salvar(TipoProduto TipoProduto);
 
+        Boolean Excluir(string codigo);
+
         public Boolean Excluir(TipoProduto TipoProduto);
     }
 }

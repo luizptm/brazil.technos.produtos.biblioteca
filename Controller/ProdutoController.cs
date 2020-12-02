@@ -2,34 +2,54 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Controller
 {
     public class ProdutoController : IProdutoController
     {
+        protected readonly IProdutoData data;
+
         public ProdutoController(IProdutoData data)
         {
+            this.data = data;
         }
 
         public Produto Get(string codigo)
         {
-            return null;
+            var result = this.data.Get(codigo);
+            return result;
+        }
+
+        public List<Produto> GetAll()
+        {
+            var result = this.data.GetAll();
+            return result;
+        }
+
+        public PagedResultDto<Produto> GetPagedData(int maxCountReg, int skip)
+        {
+            var result = this.data.GetPagedData(maxCountReg, skip);
+            return result;
         }
 
         public List<Produto> Find(Produto produto)
         {
-            return null;
+            var result = this.data.Find(produto);
+            return result;
         }
 
         public Boolean Salvar(Produto produto)
         {
-            return true;
+            var result = this.data.Salvar(produto);
+            return result;
         }
 
         public Boolean Excluir(Produto produto)
         {
-            return true;
+            var result = this.data.Excluir(produto);
+            return result;
         }
     }
 }
