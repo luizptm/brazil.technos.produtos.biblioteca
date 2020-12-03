@@ -2,12 +2,19 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
 
 namespace Data.ODBC
 {
     public class TipoProdutoOdbcData : ITipoProdutoOdbcData
     {
+        string connectionString = "";
+
+        public TipoProdutoOdbcData()
+        {
+            connectionString = ConfigurationManager.ConnectionStrings["GrupoTechnos"].ConnectionString;
+        }
         bool IRepository<TipoProduto>.Excluir(int id)
         {
             throw new NotImplementedException();
