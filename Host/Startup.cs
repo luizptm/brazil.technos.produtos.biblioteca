@@ -17,15 +17,29 @@ using System.IO;
 [assembly: OwinStartup(typeof(Host.Startup))]
 namespace Host
 {
+    /// <summary>
+    /// Startup
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Startup
+        /// </summary>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// ConfigureServices
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -51,12 +65,21 @@ namespace Host
 
             services.AddScoped<ProdutoDbContext, ProdutoDbContext>();
             services.AddScoped<TipoProdutoDbContext, TipoProdutoDbContext>();
-            //services.AddTransient<ProdutoRepository, ProdutoRepository>();
-            //services.AddTransient<TipoProdutoRepository, TipoProdutoRepository>();
-            //services.AddTransient<ProdutoAppService, ProdutoAppService>();
-            //services.AddTransient<ProdutoController, ProdutoController>();
+
+            services.AddTransient<IProdutoRepository, ProdutoRepository>();
+            services.AddTransient<ITipoProdutoRepository, TipoProdutoRepository>();
+
+            services.AddSingleton<IProdutoAppService, ProdutoAppService>();
+            services.AddSingleton<IProdutoController, ProdutoController>();
+            services.AddSingleton<ITokenAppService, TokenAppService>();
+            services.AddSingleton<IApplicationManager, ApplicationManager>();
         }
 
+        /// <summary>
+        /// Configure
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -82,6 +105,10 @@ namespace Host
             //AtivarGeracaoTokenAcesso(appBuilder);
         }
 
+        /// <summary>
+        /// AtivarGeracaoTokenAcesso
+        /// </summary>
+        /// <param name="app"></param>
         private void AtivarGeracaoTokenAcesso(Owin.IAppBuilder app)
         {
             var opcoesConfiguracaoToken = new Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerOptions()
