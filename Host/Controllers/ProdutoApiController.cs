@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Web.Http.Description;
 
 namespace Host.Controllers
 {
@@ -32,6 +33,7 @@ namespace Host.Controllers
         /// <param name="codigo">código</param>
         /// <returns>Produto</returns>
         [HttpGet]
+        [ResponseType(typeof(Produto))]
         public Produto Get(Int32 codigo)
         {
             var result = this.service.Get(codigo);
@@ -42,7 +44,8 @@ namespace Host.Controllers
         /// Obtém Todos
         /// </summary>
         /// <returns>Lista de Produtos</returns>
-        [HttpGet]
+        [HttpGet, ActionName("All")]
+        [ResponseType(typeof(List<Produto>))]
         public List<Produto> GetAll()
         {
             var result = this.service.GetAll();
@@ -55,6 +58,7 @@ namespace Host.Controllers
         /// <param name="produto">produto</param>
         /// <returns>Lista de Produtos</returns>
         [HttpPost]
+        [ResponseType(typeof(List<Produto>))]
         public List<Produto> Find(Produto produto)
         {
             var result = this.service.Find(produto);
@@ -67,6 +71,7 @@ namespace Host.Controllers
         /// <param name="produto">produto</param>
         /// <returns>Booleano</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public Boolean Salvar(Produto produto)
         {
             var result = this.service.Salvar(produto);
@@ -79,6 +84,7 @@ namespace Host.Controllers
         /// <param name="codigo">código</param>
         /// <returns>Booleano</returns>
         [HttpDelete]
+        [ValidateAntiForgeryToken]
         public Boolean Excluir(Int32 codigo)
         {
             var result = this.service.Excluir(codigo);
@@ -91,6 +97,7 @@ namespace Host.Controllers
         /// <param name="produto">produto</param>
         /// <returns>Booleano</returns>
         [HttpDelete]
+        [ValidateAntiForgeryToken]
         public Boolean Excluir(Produto produto)
         {
             var result = this.service.Excluir(produto);
