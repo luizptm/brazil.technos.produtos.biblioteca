@@ -78,8 +78,6 @@ namespace Host
 
             // ativando cors
             app.UseCors();
-
-
         }
 
         private void AtivarGeracaoTokenAcesso(IAppBuilder app)
