@@ -1,5 +1,5 @@
 using Controller;
-using Data;
+using Data.Repository;
 using Model;
 using NUnit.Framework;
 using System;
@@ -9,13 +9,13 @@ namespace Test
 {
     public class ProdutoUnitTest
     {
-        IProdutoData data;
+        IProdutoRepository data;
         IProdutoController controller;
 
         [SetUp]
         public void Setup()
         {
-            this.data = new ProdutoData();
+            this.data = new ProdutoRepository();
             this.controller = new ProdutoController(data);
         }
 

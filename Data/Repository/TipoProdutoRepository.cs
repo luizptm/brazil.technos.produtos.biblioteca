@@ -1,36 +1,109 @@
 ﻿using Model;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Linq.Expressions;
-
+using System.Linq.Dynamic.Core;
 
 namespace Data.Repository
 {
-    public class TipoProdutoRepository
+    public class TipoProdutoRepository : ITipoProdutoRepository
     {
-        TipoProduto GetById(int id)
+        private readonly TipoProdutoDbContext db;
+
+        public TipoProdutoRepository()
         {
-            return null;
+            db = new TipoProdutoDbContext();
         }
 
-        IQueryable<TipoProduto> GetAll(Expression<Func<TipoProduto, bool>> filter)
+        TipoProduto IRepository<TipoProduto>.Get(int id)
         {
-            return null;
+            var data = this.db.TipoProdutos.Find(id);
+            return data;
         }
 
-        bool Save(TipoProduto entity)
+        List<TipoProduto> IRepository<TipoProduto>.GetAll()
         {
+            var data = new List<TipoProduto>();
+            data = this.db.TipoProdutos.ToList();
+            return data;
+        }
+
+        PagedResultDto<TipoProduto> IRepository<TipoProduto>.GetPagedData(int maxCountReg, int skip)
+        {
+            List<TipoProduto> list = new List<TipoProduto>();
+            int totalRegistros = 0;
+            List<TipoProduto> result = this.GetAll();
+            if (result != null)
+            {
+                totalRegistros = result.Count;
+                var query = result.AsQueryable();
+                list = query.Page(skip, maxCountReg).ToList();
+            }
+
+            return new PagedResultDto<TipoProduto>(list, totalRegistros);
+        }
+
+        private TipoProduto Get(int id)
+        {
+            var data = this.db.TipoProdutos.Find(id);
+            return data;
+        }
+
+        private List<TipoProduto> GetAll()
+        {
+            var data = new List<TipoProduto>();
+            data = this.db.TipoProdutos.ToList();
+            return data;
+        }
+
+        List<TipoProduto> IRepository<TipoProduto>.Find(TipoProduto tipoProduto)
+        {
+            var data = new List<TipoProduto>();
+            data = this.db.TipoProdutos.Where(x => x.Id == tipoProduto.Id
+            || x.Nome == tipoProduto.Nome).ToList();
+            return data;
+        }
+
+        Boolean IRepository<TipoProduto>.Salvar(TipoProduto tipoProduto)
+        {
+            if (tipoProduto.Id == null)
+            {
+                this.db.TipoProdutos.Add(tipoProduto);
+            }
+            else
+            {
+                db.Entry(tipoProduto).State = EntityState.Modified;
+            }
+            db.SaveChanges();
             return true;
         }
 
-        bool Delete(int id)
+        Boolean IRepository<TipoProduto>.Excluir(int id)
         {
+            TipoProduto tipoProduto = this.Get(id);
+            if (tipoProduto != null)
+            {
+                this.db.TipoProdutos.Remove(tipoProduto);
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        Boolean IRepository<TipoProduto>.Excluir(TipoProduto produto)
+        {
+            this.db.TipoProdutos.Remove(produto);
+            db.SaveChanges();
             return true;
         }
 
-        bool Delete(TipoProduto entity)
+        protected void Dispose(bool disposing)
         {
-            return true;
+            if (disposing)
+            {
+                db.Dispose();
+            }
         }
     }
 }

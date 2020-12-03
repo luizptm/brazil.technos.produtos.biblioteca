@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Repository;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ namespace Controller
 {
     public class ProdutoController : IProdutoController
     {
-        private readonly IProdutoData data;
+        private readonly IProdutoRepository data;
 
-        public ProdutoController(IProdutoData data)
+        public ProdutoController(IProdutoRepository data)
         {
             this.data = data;
         }

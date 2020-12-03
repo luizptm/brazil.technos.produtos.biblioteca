@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Data.ODBC
 {
-    public class ProdutoOdbcData : IProdutoOdbcData
+    public class ProdutoOdbcRepository : IProdutoOdbcRepository
     {
         private OdbcConnection connection;
         private string connectionString = "";
 
-        public ProdutoOdbcData()
+        public ProdutoOdbcRepository()
         {
             connectionString = ConfigurationManager.ConnectionStrings["GrupoTechnos"].ConnectionString;
             connection = new OdbcConnection(connectionString);

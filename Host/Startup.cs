@@ -1,3 +1,6 @@
+using AppService;
+using Data;
+using Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +27,6 @@ namespace Host
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.AddMvc();
@@ -45,6 +47,12 @@ namespace Host
                 string caminhoXmlDoc = Path.Combine(caminhoAplicacao, $"{nomeAplicacao}.xml");
                 c.IncludeXmlComments(caminhoXmlDoc);
             });
+
+            services.AddScoped<ProdutoDbContext, ProdutoDbContext>();
+            services.AddScoped<TipoProdutoDbContext, TipoProdutoDbContext>();
+            services.AddTransient<ProdutoRepository, ProdutoRepository>();
+            services.AddTransient<TipoProdutoRepository, TipoProdutoRepository>();
+            services.AddTransient<ProdutoAppService, ProdutoAppService>();
         }
 
         public void Configure(IApplicationBuilder app, IAppBuilder appBuilder, IWebHostEnvironment env)
