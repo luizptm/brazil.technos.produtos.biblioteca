@@ -1,24 +1,9 @@
-﻿using Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Data.Repository;
+using Model;
 
 namespace Data
 {
-    public interface IProdutoData
+    public interface IProdutoData : IRepository<Produto>
     {
-        Produto Get(string codigo);
-
-        List<Produto> GetAll();
-
-        PagedResultDto<Produto> GetPagedData(int maxCountReg, int skip);
-
-        List<Produto> Find(Produto produto);
-
-        Boolean Salvar(Produto produto);
-
-        Boolean Excluir(string codigo);
-
-        Boolean Excluir(Produto produto);
     }
 }

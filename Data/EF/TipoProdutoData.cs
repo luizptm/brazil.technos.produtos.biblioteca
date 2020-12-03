@@ -1,8 +1,10 @@
-﻿using Model;
+﻿using Data.Repository;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 
 namespace Data
@@ -16,20 +18,48 @@ namespace Data
             db = new TipoProdutoDbContext();
         }
 
-        public TipoProduto Get(string codigo)
+        TipoProduto IRepository<TipoProduto>.Get(int id)
         {
-            var data = this.db.TipoProdutos.Find(codigo);
+            var data = this.db.TipoProdutos.Find(id);
             return data;
         }
 
-        public List<TipoProduto> GetAll()
+        List<TipoProduto> IRepository<TipoProduto>.GetAll()
         {
             var data = new List<TipoProduto>();
             data = this.db.TipoProdutos.ToList();
             return data;
         }
 
-        public List<TipoProduto> Find(TipoProduto tipoProduto)
+        PagedResultDto<TipoProduto> IRepository<TipoProduto>.GetPagedData(int maxCountReg, int skip)
+        {
+            List<TipoProduto> list = new List<TipoProduto>();
+            int totalRegistros = 0;
+            List<TipoProduto> result = this.GetAll();
+            if (result != null)
+            {
+                totalRegistros = result.Count;
+                var query = result.AsQueryable();
+                list = query.Page(skip, maxCountReg).ToList();
+            }
+
+            return new PagedResultDto<TipoProduto>(list, totalRegistros);
+        }
+
+        private TipoProduto Get(int id)
+        {
+            var data = this.db.TipoProdutos.Find(id);
+            return data;
+        }
+
+        private List<TipoProduto> GetAll()
+        {
+            var data = new List<TipoProduto>();
+            data = this.db.TipoProdutos.ToList();
+            return data;
+        }
+
+        List<TipoProduto> IRepository<TipoProduto>.Find(TipoProduto tipoProduto)
         {
             var data = new List<TipoProduto>();
             data = this.db.TipoProdutos.Where(x => x.Id == tipoProduto.Id
@@ -37,7 +67,7 @@ namespace Data
             return data;
         }
 
-        public Boolean Salvar(TipoProduto tipoProduto)
+        Boolean IRepository<TipoProduto>.Salvar(TipoProduto tipoProduto)
         {
             if (tipoProduto.Id == null)
             {
@@ -51,15 +81,15 @@ namespace Data
             return true;
         }
 
-        public Boolean Excluir(string codigo)
+        Boolean IRepository<TipoProduto>.Excluir(int id)
         {
-            TipoProduto produto = this.Get(codigo);
+            TipoProduto produto = this.Get(id);
             this.db.TipoProdutos.Remove(produto);
             db.SaveChanges();
             return true;
         }
 
-        public Boolean Excluir(TipoProduto produto)
+        Boolean IRepository<TipoProduto>.Excluir(TipoProduto produto)
         {
             this.db.TipoProdutos.Remove(produto);
             db.SaveChanges();

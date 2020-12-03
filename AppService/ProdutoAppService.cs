@@ -15,7 +15,7 @@ namespace AppService
             this.controller = controller;
         }
 
-        public Produto Get(string codigo)
+        public Produto Get(Int32 codigo)
         {
             var result = this.controller.Get(codigo);
             return result;
@@ -39,7 +39,7 @@ namespace AppService
             return result;
         }
 
-        public Boolean Excluir(string codigo)
+        public Boolean Excluir(Int32 codigo)
         {
             var result = this.controller.Excluir(codigo);
             return result;

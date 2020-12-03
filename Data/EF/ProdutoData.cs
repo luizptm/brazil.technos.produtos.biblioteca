@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Data.Repository;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,24 +17,24 @@ namespace Data
             db = new ProdutoDbContext();
         }
 
-        public Produto Get(string codigo)
+        Produto IRepository<Produto>.Get(int codigo)
         {
-            var data = this.db.Produtos.Find(codigo);
+            var data = this.db.Produtos.Find(codigo.ToString());
             return data;
         }
 
-        public List<Produto> GetAll()
+        List<Produto> IRepository<Produto>.GetAll()
         {
             var data = new List<Produto>();
             data = this.db.Produtos.ToList();
             return data;
         }
 
-        public PagedResultDto<Produto> GetPagedData(int maxCountReg, int skip)
+        PagedResultDto<Produto> IRepository<Produto>.GetPagedData(int maxCountReg, int skip)
         {
-            var list = new List<Produto>();
-            var totalRegistros = 0;
-            var result = this.GetAll();
+            List<Produto> list = new List<Produto>();
+            int totalRegistros = 0;
+            List<Produto> result = this.GetAll();
             if (result != null)
             {
                 totalRegistros = result.Count;
@@ -44,7 +45,20 @@ namespace Data
             return new PagedResultDto<Produto>(list, totalRegistros);
         }
 
-        public List<Produto> Find(Produto produto)
+        private Produto Get(int id)
+        {
+            var data = this.db.Produtos.Find(id);
+            return data;
+        }
+
+        private List<Produto> GetAll()
+        {
+            var data = new List<Produto>();
+            data = this.db.Produtos.ToList();
+            return data;
+        }
+
+        List<Produto> IRepository<Produto>.Find(Produto produto)
         {
             var data = new List<Produto>();
             data = this.db.Produtos.Where(x => x.Codigo == produto.Codigo
@@ -56,7 +70,7 @@ namespace Data
             return data;
         }
 
-        public Boolean Salvar(Produto produto)
+        Boolean IRepository<Produto>.Salvar(Produto produto)
         {
             if (produto.Codigo == null)
             {
@@ -71,7 +85,7 @@ namespace Data
             return true;
         }
 
-        public Boolean Excluir(string codigo)
+        Boolean IRepository<Produto>.Excluir(int codigo)
         {
             Produto produto = this.Get(codigo);
             this.db.Produtos.Remove(produto);
@@ -79,7 +93,7 @@ namespace Data
             return true;
         }
 
-        public Boolean Excluir(Produto produto)
+        Boolean IRepository<Produto>.Excluir(Produto produto)
         {
             this.db.Produtos.Remove(produto);
             db.SaveChanges();

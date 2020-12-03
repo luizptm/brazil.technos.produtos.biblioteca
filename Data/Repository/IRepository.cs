@@ -6,12 +6,14 @@ using System.Text;
 
 namespace Data.Repository
 {
-    public interface IRepository<T, TPrimaryKey> where T : class
+    public interface IRepository<T> where T : class
     {
-        T GetById(int id);
-        IQueryable<T> GetAll(Expression<Func<T, bool>> filter);
-        bool Save(T entity);
-        bool Delete(int id);
-        bool Delete(T entity);
+        public T Get(int id);
+        public List<T> GetAll();
+        public PagedResultDto<T> GetPagedData(int maxCountReg, int skip);
+        public List<T> Find(T produto);
+        public bool Salvar(T entity);
+        public bool Excluir(int id);
+        public bool Excluir(T entity);
     }
 }

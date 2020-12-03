@@ -14,7 +14,7 @@ namespace Controller
             this.data = data;
         }
 
-        public Produto Get(string codigo)
+        public Produto Get(Int32 codigo)
         {
             var result = this.data.Get(codigo);
             return result;
@@ -44,7 +44,7 @@ namespace Controller
             return result;
         }
 
-        public Boolean Excluir(string codigo)
+        public Boolean Excluir(Int32 codigo)
         {
             var result = this.data.Excluir(codigo);
             return result;

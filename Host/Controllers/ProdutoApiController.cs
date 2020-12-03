@@ -8,17 +8,17 @@ namespace Host.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProdutoController : ControllerBase
+    public class ProdutoApiController : ControllerBase
     {
         protected readonly IProdutoAppService service;
 
-        public ProdutoController(IProdutoAppService service)
+        public ProdutoApiController(IProdutoAppService service)
         {
             this.service = service;
         }
 
         [HttpGet]
-        public Produto Get(string codigo)
+        public Produto Get(Int32 codigo)
         {
             var result = this.service.Get(codigo);
             return result;
@@ -46,7 +46,7 @@ namespace Host.Controllers
         }
 
         [HttpDelete]
-        public Boolean Excluir(string codigo)
+        public Boolean Excluir(Int32 codigo)
         {
             var result = this.service.Excluir(codigo);
             return result;

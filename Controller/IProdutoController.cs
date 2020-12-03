@@ -7,7 +7,7 @@ namespace Controller
 {
     public interface IProdutoController
     {
-        Produto Get(string codigo);
+        Produto Get(Int32 codigo);
 
         List<Produto> GetAll();
 
@@ -17,7 +17,7 @@ namespace Controller
 
         Boolean Salvar(Produto produto);
 
-        Boolean Excluir(string codigo);
+        Boolean Excluir(Int32 codigo);
 
         Boolean Excluir(Produto produto);
     }

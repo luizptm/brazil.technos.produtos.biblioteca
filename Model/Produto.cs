@@ -10,9 +10,9 @@ namespace Model
     public class Produto
     {
         [Required]
-        public string Codigo { get; set; }
+        public Int32? Codigo { get; set; }
         public string Descricao { get; set; }
-        public string Marca { get; set; }
+        public Marca Marca { get; set; }
 
         public double Preco { get; set; }
         [Required]

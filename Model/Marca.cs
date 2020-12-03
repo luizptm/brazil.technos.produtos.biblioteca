@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Model
 {
-    [Table("TipoProduto")]
-    public class TipoProduto
+    [Table("Marca")]
+    public class Marca
     {
         [Required]
         public Int32? Id { get; set; }
