@@ -6,17 +6,31 @@ using System.Collections.Generic;
 
 namespace Host.Controllers
 {
+    /// <summary>
+    /// ProdutoApiController
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ProdutoApiController : ControllerBase
     {
+        /// <summary>
+        /// service
+        /// </summary>
         protected readonly IProdutoAppService service;
 
+        /// <summary>
+        /// Construtor
+        /// </summary>
         public ProdutoApiController(IProdutoAppService service)
         {
             this.service = service;
         }
 
+        /// <summary>
+        /// Obtém Por ID
+        /// </summary>
+        /// <param name="codigo">código</param>
+        /// <returns>Produto</returns>
         [HttpGet]
         public Produto Get(Int32 codigo)
         {
@@ -24,6 +38,10 @@ namespace Host.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Obtém Todos
+        /// </summary>
+        /// <returns>Lista de Produtos</returns>
         [HttpGet]
         public List<Produto> GetAll()
         {
@@ -31,6 +49,11 @@ namespace Host.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Busca
+        /// </summary>
+        /// <param name="produto">produto</param>
+        /// <returns>Lista de Produtos</returns>
         [HttpPost]
         public List<Produto> Find(Produto produto)
         {
@@ -38,6 +61,11 @@ namespace Host.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Salva um Produto (cria ou atualiza)
+        /// </summary>
+        /// <param name="produto">produto</param>
+        /// <returns>Booleano</returns>
         [HttpPost]
         public Boolean Salvar(Produto produto)
         {
@@ -45,6 +73,11 @@ namespace Host.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Exclui um Produto
+        /// </summary>
+        /// <param name="codigo">código</param>
+        /// <returns>Booleano</returns>
         [HttpDelete]
         public Boolean Excluir(Int32 codigo)
         {
@@ -52,6 +85,11 @@ namespace Host.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Exclui um Produto
+        /// </summary>
+        /// <param name="produto">produto</param>
+        /// <returns>Booleano</returns>
         [HttpDelete]
         public Boolean Excluir(Produto produto)
         {
