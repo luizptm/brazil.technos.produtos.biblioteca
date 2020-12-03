@@ -60,5 +60,48 @@
             <param name="produto">produto</param>
             <returns>Booleano</returns>
         </member>
+        <member name="T:Host.Controllers.TokenController">
+            <summary>
+            TokenController
+            </summary>
+        </member>
+        <member name="M:Host.Controllers.TokenController.#ctor(AppService.ITokenAppService)">
+            <summary>
+            Construtor
+            </summary>
+            <param name="service"></param>
+        </member>
+        <member name="M:Host.Controllers.TokenController.Create(Security.ApplicationTokenData)">
+            <summary>
+            Cria Token
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Host.Controllers.TokenController.Validate(System.String)">
+            <summary>
+            Valida Token
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Host.Program">
+            <summary>
+            Program
+            </summary>
+        </member>
+        <member name="M:Host.Program.Main(System.String[])">
+            <summary>
+            Main
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Host.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            CreateHostBuilder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

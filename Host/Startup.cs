@@ -1,4 +1,5 @@
 using AppService;
+using Controller;
 using Data;
 using Data.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -50,12 +51,13 @@ namespace Host
 
             services.AddScoped<ProdutoDbContext, ProdutoDbContext>();
             services.AddScoped<TipoProdutoDbContext, TipoProdutoDbContext>();
-            services.AddTransient<ProdutoRepository, ProdutoRepository>();
-            services.AddTransient<TipoProdutoRepository, TipoProdutoRepository>();
-            services.AddTransient<ProdutoAppService, ProdutoAppService>();
+            //services.AddTransient<ProdutoRepository, ProdutoRepository>();
+            //services.AddTransient<TipoProdutoRepository, TipoProdutoRepository>();
+            //services.AddTransient<ProdutoAppService, ProdutoAppService>();
+            //services.AddTransient<ProdutoController, ProdutoController>();
         }
 
-        public void Configure(IApplicationBuilder app, IAppBuilder appBuilder, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -73,14 +75,14 @@ namespace Host
                 endpoints.MapControllers();
             });
 
-            //ativando a geração dos tokens de acesso
-            AtivarGeracaoTokenAcesso(appBuilder);
-
             // ativando cors
             app.UseCors();
+
+            //ativando a geração dos tokens de acesso
+            //AtivarGeracaoTokenAcesso(appBuilder);
         }
 
-        private void AtivarGeracaoTokenAcesso(IAppBuilder app)
+        private void AtivarGeracaoTokenAcesso(Owin.IAppBuilder app)
         {
             var opcoesConfiguracaoToken = new Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerOptions()
             {

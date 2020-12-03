@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace AppService
 {
-    public interface IApplicationAppService
+    public interface ITokenAppService
     {
         ApplicationTokenOutput CreateToken(ApplicationTokenData input);
 

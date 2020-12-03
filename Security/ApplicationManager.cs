@@ -10,6 +10,15 @@ namespace Security
 {
     public class ApplicationManager : IApplicationManager
     {
+        public virtual Application CreateApplication()
+        {
+            var application = new Application();
+            application.Name = "Produtos";
+            application.SecretWord = "senha";
+            application.SecretWord = CalculateMd5Hash(application.SecretWord);
+            application.SecondsToExpire = TimeSpan.FromHours(1).Seconds; //60 seconds
+            return application;
+        }
         public virtual string CreateToken(string application, string secretword, string username)
         {
             return CreateToken(application, secretword, username, string.Empty);
@@ -18,11 +27,8 @@ namespace Security
         public virtual string CreateToken(string application, string secretword, string username, string data)
         {
             var unencodedMessage = $"user={username}";
-
             var epochTimeSpan = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-
             unencodedMessage += "&dt=" + epochTimeSpan;
-
             unencodedMessage += "&app=" + application;
 
             if (data != null && data != "")
@@ -31,11 +37,8 @@ namespace Security
             }
 
             var messageToEncode = unencodedMessage + "&" + secretword;
-
             var md5HashString = CalculateMd5Hash(messageToEncode);
-
             var md5MessageString = unencodedMessage + "&md5=" + md5HashString;
-
             var base64MessageString = Base64Encode(md5MessageString);
 
             return base64MessageString;
@@ -43,10 +46,7 @@ namespace Security
 
         public virtual string ValidateToken(string token)
         {
-            var dictionary = ConvertTokenToDictionary(token);
-
-            var application = new Application();
-
+            var application = this.CreateApplication();
             if (application == null)
             {
                 throw new UserFriendlyException(404, "ApplicationDoesNotExists");
@@ -83,9 +83,9 @@ namespace Security
             return dictionary.ContainsKey("data") ? $"user={dictionary["user"]}&data={dictionary["data"]}" : dictionary["user"];
         }
 
-        #region Private Functions
+        #region Auxiliary Functions
 
-        private static string CalculateMd5Hash(string value)
+        protected static string CalculateMd5Hash(string value)
         {
             var bytes = Encoding.UTF8.GetBytes(value);
             const char padding = '0';
@@ -98,20 +98,20 @@ namespace Security
             return hashString.PadLeft(32, padding);
         }
 
-        private static Dictionary<string, string> ConvertTokenToDictionary(string token)
+        protected static Dictionary<string, string> ConvertTokenToDictionary(string token)
         {
             var unencodedMessage = Base64Decode(token);
 
             return unencodedMessage.Split('&').ToDictionary(x => x.Split('=')[0], x => x.Split('=')[1]);
         }
 
-        private static string Base64Encode(string value)
+        public static string Base64Encode(string value)
         {
             var plainTextBytes = Encoding.UTF8.GetBytes(value);
             return Convert.ToBase64String(plainTextBytes);
         }
 
-        private static string Base64Decode(string value)
+        public static string Base64Decode(string value)
         {
             var base64EncodedBytes = Convert.FromBase64String(value);
             return Encoding.UTF8.GetString(base64EncodedBytes);

@@ -6,6 +6,8 @@ namespace Security
 {
     public interface IApplicationManager
     {
+        Application CreateApplication();
+
         string CreateToken(string application, string secretword, string username);
 
         string CreateToken(string application, string secretword, string username, string data);
