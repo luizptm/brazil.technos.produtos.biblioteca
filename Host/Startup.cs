@@ -1,16 +1,15 @@
+using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Owin;
+using Owin;
+using Security;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
+[assembly: OwinStartup(typeof(Host.Startup))]
 namespace Host
 {
     public class Startup
@@ -25,11 +24,13 @@ namespace Host
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
+            //var cnnStrr = Configuration.GetConnectionString("GrupoTechnos");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IAppBuilder appBuilder, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -46,6 +47,26 @@ namespace Host
             {
                 endpoints.MapControllers();
             });
+
+            //ativando a geração dos tokens de acesso
+            AtivarGeracaoTokenAcesso(appBuilder);
+
+            // ativando cors
+            app.UseCors();
+        }
+
+        private void AtivarGeracaoTokenAcesso(IAppBuilder app)
+        {
+            var opcoesConfiguracaoToken = new Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerOptions()
+            {
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new Microsoft.Owin.PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(1)
+            };
+            opcoesConfiguracaoToken.Provider = new ProviderDeTokensDeAcesso();
+
+            app.UseOAuthAuthorizationServer(opcoesConfiguracaoToken);
+            app.UseOAuthBearerAuthentication(new Microsoft.Owin.Security.OAuth.OAuthBearerAuthenticationOptions());
         }
     }
 }

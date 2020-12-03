@@ -6,6 +6,6 @@ namespace Security
 {
     public class ApplicationTokenData
     {
-        public string UsuarioLogado { get; set; }
+        public string Username { get; set; }
     }
 }
