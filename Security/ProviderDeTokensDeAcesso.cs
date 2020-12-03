@@ -1,4 +1,5 @@
 ﻿using Controller;
+using Data;
 using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -7,6 +8,14 @@ namespace Security
 {
     public class ProviderDeTokensDeAcesso : OAuthAuthorizationServerProvider
     {
+        LoginController loginController;
+
+        public ProviderDeTokensDeAcesso()
+        {
+            LoginData data = new LoginData();
+            this.loginController = new LoginController(data);
+        }
+
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -15,7 +24,6 @@ namespace Security
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
 
         {
-            LoginController loginController = new LoginController();
             if (loginController.Login(context.UserName, context.Password))
             {
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);

@@ -1,4 +1,5 @@
 ﻿using Controller;
+using Data;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -13,6 +14,14 @@ namespace Security
 {
     public class AthenticationAttribute : AuthorizationFilterAttribute
     {
+        LoginController loginController;
+
+        public AthenticationAttribute()
+        {
+            LoginData data = new LoginData();
+            this.loginController = new LoginController(data);
+        }
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (actionContext.Request.Headers.Authorization == null)
@@ -22,19 +31,16 @@ namespace Security
             }
             else
             {
-                //çasfjdçjsfllçfjlkf
-                string authenticationToken = actionContext.Request
-                    .Headers.Authorization.Parameter;
-                //macoratti:numsey
-                string decodedAuthenticationToken = Encoding.UTF8.GetString(
-                    Convert.FromBase64String(authenticationToken));
+                string authenticationToken = actionContext.Request .Headers.Authorization.Parameter;
+
+               var token = Convert.FromBase64String(authenticationToken);
+                string decodedAuthenticationToken = Encoding.UTF8.GetString(token);
 
                 string[] usernamePassordArray = decodedAuthenticationToken.Split(':');
 
                 string username = usernamePassordArray[0];
                 string password = usernamePassordArray[1];
 
-                LoginController loginController = new LoginController();
                 if (loginController.Login(username, password))
                 {
                     Thread.CurrentPrincipal = new GenericPrincipal(

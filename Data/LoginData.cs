@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data
 {
-    public class LoginData
+    public class LoginData : ILoginData
     {
         public bool Login(string login, string senha)
         {

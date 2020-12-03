@@ -11,7 +11,7 @@ namespace Data
 {
     public class TipoProdutoData : ITipoProdutoData
     {
-        protected readonly TipoProdutoDbContext db;
+        private readonly TipoProdutoDbContext db;
 
         public TipoProdutoData()
         {

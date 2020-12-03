@@ -10,7 +10,7 @@ namespace Data
 {
     public class ProdutoData : IProdutoData
     {
-        protected readonly ProdutoDbContext db;
+        private readonly ProdutoDbContext db;
 
         public ProdutoData()
         {

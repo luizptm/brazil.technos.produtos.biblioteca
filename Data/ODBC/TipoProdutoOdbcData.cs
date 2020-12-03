@@ -9,7 +9,7 @@ namespace Data.ODBC
 {
     public class TipoProdutoOdbcData : ITipoProdutoOdbcData
     {
-        string connectionString = "";
+        private string connectionString = "";
 
         public TipoProdutoOdbcData()
         {

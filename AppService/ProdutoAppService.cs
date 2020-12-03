@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 namespace AppService
 {
-
     public class ProdutoAppService : IProdutoAppService
     {
-        protected readonly IProdutoController controller;
+        private readonly IProdutoController controller;
 
         public ProdutoAppService(IProdutoController controller)
         {

@@ -10,11 +10,13 @@ namespace Data.ODBC
 {
     public class ProdutoOdbcData : IProdutoOdbcData
     {
-        string connectionString = "";
+        private OdbcConnection connection;
+        private string connectionString = "";
 
         public ProdutoOdbcData()
         {
             connectionString = ConfigurationManager.ConnectionStrings["GrupoTechnos"].ConnectionString;
+            connection = new OdbcConnection(connectionString);
         }
 
         Produto IRepository<Produto>.Get(int id)
@@ -25,7 +27,7 @@ namespace Data.ODBC
         List<Produto> IRepository<Produto>.GetAll()
         {
             var data = new List<Produto>();
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (this.connection)
             {
                 OdbcCommand MyCommand = new OdbcCommand();
                 MyCommand.CommandText = "SELECT * FROM Produto";
@@ -73,7 +75,7 @@ namespace Data.ODBC
                 sql = sql.Replace("@DataLancamento", "'" + entity.DataLancamento + "'");
                 sql = sql.Replace("@TipoProduto", entity.TipoProduto.Id.ToString());
                 OdbcCommand command = new OdbcCommand(sql);
-                using (OdbcConnection connection = new OdbcConnection(connectionString))
+                using (this.connection)
                 {
                     command.Connection = connection;
                     connection.Open();
@@ -95,7 +97,7 @@ namespace Data.ODBC
                 sql = sql.Replace("@TipoProduto", entity.TipoProduto.Id.ToString());
                 sql = sql.Replace("@Codigo", entity.Codigo.ToString());
                 OdbcCommand command = new OdbcCommand(sql);
-                using (OdbcConnection connection = new OdbcConnection(connectionString))
+                using (this.connection)
                 {
                     command.Connection = connection;
                     connection.Open();
@@ -110,7 +112,7 @@ namespace Data.ODBC
             string sql = "DELETE Produto WHERE Codigo = @Codigo";
             sql = sql.Replace("@Codigo", id.ToString());
             OdbcCommand command = new OdbcCommand(sql);
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (this.connection)
             {
                 command.Connection = connection;
                 connection.Open();
@@ -124,7 +126,7 @@ namespace Data.ODBC
             string sql = "DELETE Produto WHERE Codigo = @Codigo";
             sql = sql.Replace("@Codigo", entity.Codigo.ToString());
             OdbcCommand command = new OdbcCommand(sql);
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (this.connection)
             {
                 command.Connection = connection;
                 connection.Open();

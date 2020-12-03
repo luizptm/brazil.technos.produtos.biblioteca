@@ -7,7 +7,7 @@ namespace Controller
 {
     public class ProdutoController : IProdutoController
     {
-        protected readonly IProdutoData data;
+        private readonly IProdutoData data;
 
         public ProdutoController(IProdutoData data)
         {
