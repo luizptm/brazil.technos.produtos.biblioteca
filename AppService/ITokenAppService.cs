@@ -5,7 +5,7 @@ namespace AppService
 {
     public interface ITokenAppService
     {
-        ApplicationTokenOutput CreateToken(ApplicationTokenData input);
+        object CreateToken(ApplicationTokenData input);
 
         Task<string> ValidateToken(string token);
     }

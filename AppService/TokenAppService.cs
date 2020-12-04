@@ -2,6 +2,10 @@
 using Data;
 using Newtonsoft.Json;
 using Security;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace AppService
@@ -18,7 +22,7 @@ namespace AppService
             this.loginController = new LoginController(data);
         }
 
-        public ApplicationTokenOutput CreateToken(ApplicationTokenData input)
+        public object CreateToken(ApplicationTokenData input)
         {
             if (loginController.Login(input.Username, input.Senha))
             {
@@ -28,7 +32,26 @@ namespace AppService
                     Token = applicationManager.CreateToken(application.Name, application.SecretWord, input.Username,
                     JsonConvert.SerializeObject(input)),
                 };
-                return output;
+
+                ClaimsIdentity identity = new ClaimsIdentity(
+                    new GenericIdentity(input.Username, "Login"),
+                    new[] {
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                        new Claim(JwtRegisteredClaimNames.UniqueName, input.Username)
+                    }
+                );
+
+                DateTime dataCriacao = DateTime.Now;
+                var token = TokenConfigurer.Create(identity);
+                return new
+                {
+                    authenticated = true,
+                    created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    expiration = TokenConfigurer.dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    accessToken = output.Token,
+                    message = "OK"
+                };
+                //return output;
             }
             else
             {

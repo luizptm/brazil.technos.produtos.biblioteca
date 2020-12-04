@@ -3,7 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 
 namespace Security
@@ -12,10 +14,25 @@ namespace Security
     {
         private static IConfiguration configuration;
 
-        public static string Create()
+        private static int seconds = 3600;
+        private static DateTime dataCriacao = DateTime.Now;
+        public static DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(seconds);
+
+        private static string ValidIssuer = "";
+        private static string ValidAudience = "";
+
+        public static string Create(ClaimsIdentity identity = null)
         {
-            DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao +  TimeSpan.FromSeconds(60);
+            if (identity == null)
+            {
+                identity = new ClaimsIdentity(
+                    new GenericIdentity("1", "Login"),
+                    new[] {
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                        new Claim("teste", "1")
+                    }
+                );
+            }
  
             var provider = new RSACryptoServiceProvider(2048);
             var Key = new RsaSecurityKey(provider.ExportParameters(true));
@@ -23,9 +40,10 @@ namespace Security
             var handler = new JwtSecurityTokenHandler();
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = configuration["JwtBearer:Issuer"],
-                Audience = configuration["JwtBearer:Audience"],
+                Issuer = ValidIssuer,
+                Audience = ValidAudience,
                 SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256Signature),
+                Subject = identity,
                 NotBefore = dataCriacao,
                 Expires = dataExpiracao
             });
@@ -51,6 +69,7 @@ namespace Security
 
                         // Validate the JWT Issuer (iss) claim
                         ValidateIssuer = true,
+
                         ValidIssuer = configuration["JwtBearer:Issuer"],
 
                         // Validate the JWT Audience (aud) claim
@@ -66,6 +85,9 @@ namespace Security
 
                     options.SecurityTokenValidators.Clear();
                     options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler());
+
+                    ValidIssuer = options.TokenValidationParameters.ValidIssuer;
+                    ValidAudience = options.TokenValidationParameters.ValidAudience;
                 });
             }
         }

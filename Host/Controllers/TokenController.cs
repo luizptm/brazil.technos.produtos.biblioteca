@@ -35,14 +35,13 @@ namespace Host.Controllers
         //public object Post(ApplicationTokenData input)
         //{
         //    DateTime dataCriacao = DateTime.Now;
-        //    DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(60);
         //    var token = TokenConfigurer.Create();
 
         //    return new
         //    {
         //        authenticated = true,
         //        created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-        //        expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+        //        expiration = TokenConfigurer.dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
         //        accessToken = token,
         //        message = "OK"
         //    };
@@ -55,12 +54,12 @@ namespace Host.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost, ActionName("Create")]
-        public String Create(ApplicationTokenData input)
+        public object Create(ApplicationTokenData input)
         {
-            ApplicationTokenOutput applicationTokenOutput = this.service.CreateToken(input);
+            var applicationTokenOutput = this.service.CreateToken(input);
             if (applicationTokenOutput != null)
             {
-                return applicationTokenOutput.Token;
+                return applicationTokenOutput;
             }
             return "ERRO!";
         }
