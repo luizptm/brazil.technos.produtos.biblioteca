@@ -1,4 +1,5 @@
 ﻿using AppService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 using System;
@@ -8,11 +9,11 @@ using System.Web.Http.Description;
 namespace Host.Controllers
 {
     /// <summary>
-    /// ProdutoApiController
+    /// ProdutoController
     /// </summary>
-    [Route("api/produto")]
     [ApiController]
-    public class ProdutoApiController : ControllerBase
+    [Route("api/[controller]")]
+    public class ProdutoController : ControllerBase
     {
         /// <summary>
         /// service
@@ -22,15 +23,9 @@ namespace Host.Controllers
         /// <summary>
         /// Construtor
         /// </summary>
-        public ProdutoApiController(IProdutoAppService service)
+        public ProdutoController(IProdutoAppService service)
         {
             this.service = service;
-        }
-
-        [HttpGet]
-        public String Hello()
-        {
-            return "Welcome aboard!";
         }
 
         /// <summary>
@@ -50,7 +45,7 @@ namespace Host.Controllers
         /// Obtém Todos
         /// </summary>
         /// <returns>Lista de Produtos</returns>
-        [HttpGet, ActionName("All")]
+        [HttpPost, ActionName("All")]
         [ResponseType(typeof(List<Produto>))]
         public List<Produto> GetAll()
         {
@@ -63,7 +58,7 @@ namespace Host.Controllers
         /// </summary>
         /// <param name="produto">produto</param>
         /// <returns>Lista de Produtos</returns>
-        [HttpPost]
+        [HttpPost, ActionName("Find")]
         [ResponseType(typeof(List<Produto>))]
         public List<Produto> Find(Produto produto)
         {
@@ -76,7 +71,7 @@ namespace Host.Controllers
         /// </summary>
         /// <param name="produto">produto</param>
         /// <returns>Booleano</returns>
-        [HttpPost]
+        [HttpPost, ActionName("Save")]
         [ValidateAntiForgeryToken]
         public Boolean Salvar(Produto produto)
         {
@@ -89,7 +84,7 @@ namespace Host.Controllers
         /// </summary>
         /// <param name="codigo">código</param>
         /// <returns>Booleano</returns>
-        [HttpDelete]
+        [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public Boolean Excluir(Int32 codigo)
         {
@@ -102,7 +97,7 @@ namespace Host.Controllers
         /// </summary>
         /// <param name="produto">produto</param>
         /// <returns>Booleano</returns>
-        [HttpDelete]
+        [HttpDelete, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public Boolean Excluir(Produto produto)
         {
