@@ -26,13 +26,6 @@ namespace AppService
         {
             if (loginController.Login(input.Username, input.Senha))
             {
-                var application = this.applicationManager.CreateApplication();
-                var output = new ApplicationTokenOutput()
-                {
-                    Token = applicationManager.CreateToken(application.Name, application.SecretWord, input.Username,
-                    JsonConvert.SerializeObject(input)),
-                };
-
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new GenericIdentity(input.Username, "Login"),
                     new[] {
@@ -48,7 +41,7 @@ namespace AppService
                     authenticated = true,
                     created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                     expiration = TokenConfigurer.dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    accessToken = output.Token,
+                    accessToken = token,
                     message = "OK"
                 };
                 //return output;
