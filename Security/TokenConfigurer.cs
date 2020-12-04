@@ -3,14 +3,40 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Security
 {
     public static class TokenConfigurer
     {
+        private static IConfiguration configuration;
+
+        public static string Create()
+        {
+            DateTime dataCriacao = DateTime.Now;
+            DateTime dataExpiracao = dataCriacao +  TimeSpan.FromSeconds(60);
+ 
+            var provider = new RSACryptoServiceProvider(2048);
+            var Key = new RsaSecurityKey(provider.ExportParameters(true));
+
+            var handler = new JwtSecurityTokenHandler();
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = configuration["JwtBearer:Issuer"],
+                Audience = configuration["JwtBearer:Audience"],
+                SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256Signature),
+                NotBefore = dataCriacao,
+                Expires = dataExpiracao
+            });
+            var token = handler.WriteToken(securityToken);
+            return token;
+        }
+
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            TokenConfigurer.configuration = configuration;
+
             var authenticationBuilder = services.AddAuthentication();
 
             if (bool.Parse(configuration["JwtBearer:IsEnabled"]))

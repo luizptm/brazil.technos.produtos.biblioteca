@@ -1,4 +1,5 @@
 ﻿using AppService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Security;
 using System;
@@ -29,7 +30,31 @@ namespace Host.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [HttpPost]
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public object Post(ApplicationTokenData input)
+        //{
+        //    DateTime dataCriacao = DateTime.Now;
+        //    DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(60);
+        //    var token = TokenConfigurer.Create();
+
+        //    return new
+        //    {
+        //        authenticated = true,
+        //        created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+        //        expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+        //        accessToken = token,
+        //        message = "OK"
+        //    };
+        //}
+
+        /// <summary>
+        /// Cria Token
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost, ActionName("Create")]
         public String Create(ApplicationTokenData input)
         {
             ApplicationTokenOutput applicationTokenOutput = this.service.CreateToken(input);
