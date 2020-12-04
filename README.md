@@ -11,3 +11,5 @@ Body:
 }
 
 Nome do banco de Dados: GrupoTechnos
+
+O Script de criação do banco está dentro do projeto Data.
