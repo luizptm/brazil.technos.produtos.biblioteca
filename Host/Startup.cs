@@ -2,22 +2,15 @@ using AppService;
 using Controller;
 using Data;
 using Data.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin;
-using Owin;
 using Security;
-using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: OwinStartup(typeof(Host.Startup))]
 namespace Host
@@ -32,13 +25,13 @@ namespace Host
         /// <summary>
         /// Configuration
         /// </summary>
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         /// <summary>
         /// Startup
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfigurationRoot configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -82,7 +75,7 @@ namespace Host
             services.AddSingleton<IApplicationManager, ApplicationManager>();
 
             //ativando a geração dos tokens de acesso
-            this.ConfigureJwtBearer(services, this.Configuration);
+            TokenConfigurer.Configure(services, this.Configuration);
         }
 
         /// <summary>
@@ -112,41 +105,5 @@ namespace Host
             // ativando cors
             app.UseCors(DefaultCorsPolicyName);
         }
-
-        private void ConfigureJwtBearer(IServiceCollection services, IConfiguration configuration)
-        {
-            var authenticationBuilder = services.AddAuthentication();
-
-            if (bool.Parse(configuration["JwtBearer:IsEnabled"]))
-            {
-                authenticationBuilder.AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        // The signing key must match!
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JwtBearer:SecurityKey"])),
-
-                        // Validate the JWT Issuer (iss) claim
-                        ValidateIssuer = true,
-                        ValidIssuer = configuration["JwtBearer:Issuer"],
-
-                        // Validate the JWT Audience (aud) claim
-                        ValidateAudience = true,
-                        ValidAudience = configuration["JwtBearer:Audience"],
-
-                        // Validate the token expiry
-                        ValidateLifetime = true,
-
-                        // If you want to allow a certain amount of clock drift, set that here
-                        ClockSkew = TimeSpan.Zero
-                    };
-
-                    options.SecurityTokenValidators.Clear();
-                    options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler());
-                });
-            }
-        }
-
     }
 }
