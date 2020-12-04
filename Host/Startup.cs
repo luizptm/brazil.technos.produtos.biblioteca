@@ -67,6 +67,11 @@ namespace Host
                         Url = new Uri("https://example.com/license"),
                     }
                 });
+                c.DocInclusionPredicate((docName, description) => true);
+
+                //Note: This is just for showing Authorize button on the UI. 
+                //Authorize button's behaviour is handled in wwwroot/swagger/ui/index.html
+                //c.AddSecurityDefinition("Bearer", new SecurityScheme());
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -134,8 +139,10 @@ namespace Host
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
+                c.RoutePrefix = "swagger";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Host");
                 c.RoutePrefix = string.Empty;
+                c.DocumentTitle = "Produto API V1";
             });
 
             app.UseEndpoints(endpoints =>
