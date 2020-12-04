@@ -85,6 +85,23 @@
             <param name="token"></param>
             <returns></returns>
         </member>
+        <member name="T:Host.WeatherForecastController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Host.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{Host.WeatherForecastController})">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Host.WeatherForecastController.Get">
+            <summary>
+            /
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Host.Program">
             <summary>
             Program
@@ -113,7 +130,7 @@
             Configuration
             </summary>
         </member>
-        <member name="M:Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Host.Startup.#ctor(Microsoft.Extensions.Configuration.IConfigurationRoot)">
             <summary>
             Startup
             </summary>
@@ -131,12 +148,6 @@
             </summary>
             <param name="app"></param>
             <param name="env"></param>
-        </member>
-        <member name="M:Host.Startup.AtivarGeracaoTokenAcesso(Owin.IAppBuilder)">
-            <summary>
-            AtivarGeracaoTokenAcesso
-            </summary>
-            <param name="app"></param>
         </member>
     </members>
 </doc>
