@@ -10,10 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.OpenApi.Models;
 using Microsoft.Owin;
 using Security;
+using System;
 using System.IO;
+using System.Reflection;
 
 [assembly: OwinStartup(typeof(Host.Startup))]
 namespace Host
@@ -23,15 +25,13 @@ namespace Host
     /// </summary>
     public class Startup
     {
-        private const string DefaultCorsPolicyName = "localhost";
-
         /// <summary>
         /// Configuration
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Startup
+        /// 
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
@@ -51,23 +51,33 @@ namespace Host
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", 
-                    new Microsoft.OpenApi.Models.OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Produto",
+                    Version = "v1",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
                     {
-                        Title = "Produto",
-                        Version = "v1",
-                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                        Name = "Luiz Paulo",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/luizptm")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
                     }
-                );
+                });
 
-                string caminhoAplicacao = PlatformServices.Default.Application.ApplicationBasePath;
-                string nomeAplicacao = PlatformServices.Default.Application.ApplicationName;
-                string caminhoXmlDoc = Path.Combine(caminhoAplicacao, $"{nomeAplicacao}.xml");
-                c.IncludeXmlComments(caminhoXmlDoc);
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase("InMemoryDatabase"));
+            //services.AddDbContext < ApplicationDbContext>(options =>
+            //    options.UseSqlServer(Configuration.GetConnectionString("GrupoTechnos")));
             services.AddScoped<ProdutoDbContext, ProdutoDbContext>();
             services.AddScoped<TipoProdutoDbContext, TipoProdutoDbContext>();
 
@@ -117,13 +127,26 @@ namespace Host
 
             app.UseAuthorization();
 
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Host");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
             // ativando cors
-            app.UseCors(DefaultCorsPolicyName);
+            app.UseCors(builder => builder.AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowAnyHeader());
         }
     }
 }

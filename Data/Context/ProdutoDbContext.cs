@@ -14,6 +14,8 @@ namespace Data
         {
             modelBuilder.Entity<Produto>()
                 .HasKey(p => p.Codigo);
+            //modelBuilder.Entity<Produto>()
+            //   .ForSqlServerIsMemoryOptimized();
         }
 
         public DbSet<Produto> Produtos { get; set;  }
