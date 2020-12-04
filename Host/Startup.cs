@@ -76,6 +76,13 @@ namespace Host
 
             //ativando a geração dos tokens de acesso
             TokenConfigurer.Configure(services, this.Configuration);
+
+            #region Authentication
+            services.AddAuthentication(o => {
+                o.DefaultScheme = SchemesNamesConst.TokenAuthenticationDefaultScheme;
+            })
+            .AddScheme<TokenAuthenticationOptions, TokenAuthenticationHandler>(SchemesNamesConst.TokenAuthenticationDefaultScheme, o => { });
+            #endregion
         }
 
         /// <summary>
@@ -94,7 +101,6 @@ namespace Host
 
             app.UseRouting();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

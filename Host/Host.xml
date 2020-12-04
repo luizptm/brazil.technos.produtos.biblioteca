@@ -4,56 +4,67 @@
         <name>Host</name>
     </assembly>
     <members>
-        <member name="T:Host.Controllers.ProdutoApiController">
+        <member name="T:Host.Controllers.MainController">
             <summary>
-            ProdutoApiController
+            MainController
             </summary>
         </member>
-        <member name="F:Host.Controllers.ProdutoApiController.service">
+        <member name="M:Host.Controllers.MainController.Get">
+            <summary>
+            Get
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Host.Controllers.ProdutoController">
+            <summary>
+            ProdutoController
+            </summary>
+        </member>
+        <member name="F:Host.Controllers.ProdutoController.service">
             <summary>
             service
             </summary>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.#ctor(AppService.IProdutoAppService)">
+        <member name="M:Host.Controllers.ProdutoController.#ctor(AppService.IProdutoAppService)">
             <summary>
             Construtor
             </summary>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.Get(System.Int32)">
+        <member name="M:Host.Controllers.ProdutoController.Get(System.Int32)">
             <summary>
             Obtém Por ID
             </summary>
             <param name="codigo">código</param>
             <returns>Produto</returns>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.GetAll">
+        <member name="M:Host.Controllers.ProdutoController.GetAll">
             <summary>
             Obtém Todos
             </summary>
             <returns>Lista de Produtos</returns>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.Find(Model.Produto)">
+        <member name="M:Host.Controllers.ProdutoController.Find(Model.Produto)">
             <summary>
             Busca
             </summary>
             <param name="produto">produto</param>
             <returns>Lista de Produtos</returns>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.Salvar(Model.Produto)">
+        <member name="M:Host.Controllers.ProdutoController.Salvar(Model.Produto)">
             <summary>
             Salva um Produto (cria ou atualiza)
             </summary>
             <param name="produto">produto</param>
             <returns>Booleano</returns>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.Excluir(System.Int32)">
+        <member name="M:Host.Controllers.ProdutoController.Excluir(System.Int32)">
             <summary>
             Exclui um Produto
             </summary>
             <param name="codigo">código</param>
             <returns>Booleano</returns>
         </member>
-        <member name="M:Host.Controllers.ProdutoApiController.Excluir(Model.Produto)">
+        <member name="M:Host.Controllers.ProdutoController.Excluir(Model.Produto)">
             <summary>
             Exclui um Produto
             </summary>
@@ -87,18 +98,12 @@
         </member>
         <member name="T:Host.WeatherForecastController">
             <summary>
-            
+            WeatherForecastController
             </summary>
-        </member>
-        <member name="M:Host.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{Host.WeatherForecastController})">
-            <summary>
-            
-            </summary>
-            <param name="logger"></param>
         </member>
         <member name="M:Host.WeatherForecastController.Get">
             <summary>
-            /
+            Get
             </summary>
             <returns></returns>
         </member>

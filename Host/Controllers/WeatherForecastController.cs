@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 namespace Host
 {
     /// <summary>
-    /// 
+    /// WeatherForecastController
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -19,19 +18,8 @@ namespace Host
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
-
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="logger"></param>
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
-
-        /// <summary>
-        /// /
+        /// Get
         /// </summary>
         /// <returns></returns>
         [HttpGet]

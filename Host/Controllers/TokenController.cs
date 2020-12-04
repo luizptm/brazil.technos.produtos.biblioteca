@@ -1,6 +1,7 @@
 ﻿using AppService;
 using Microsoft.AspNetCore.Mvc;
 using Security;
+using System;
 using System.Threading.Tasks;
 
 namespace Host.Controllers
@@ -8,8 +9,8 @@ namespace Host.Controllers
     /// <summary>
     /// TokenController
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class TokenController : ControllerBase
     {
         private readonly ITokenAppService service;
@@ -29,9 +30,14 @@ namespace Host.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public ApplicationTokenOutput Create(ApplicationTokenData input)
+        public String Create(ApplicationTokenData input)
         {
-            return this.service.CreateToken(input);
+            ApplicationTokenOutput applicationTokenOutput = this.service.CreateToken(input);
+            if (applicationTokenOutput != null)
+            {
+                return applicationTokenOutput.Token;
+            }
+            return "ERRO!";
         }
 
         /// <summary>
