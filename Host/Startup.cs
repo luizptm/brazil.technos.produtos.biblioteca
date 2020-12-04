@@ -1,7 +1,9 @@
-using AppService;
+﻿using AppService;
 using Controller;
 using Data;
 using Data.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -74,7 +76,7 @@ namespace Host
             services.AddSingleton<ITokenAppService, TokenAppService>();
             services.AddSingleton<IApplicationManager, ApplicationManager>();
 
-            //ativando a gera��o dos tokens de acesso
+            //ativando a geração dos tokens de acesso
             TokenConfigurer.Configure(services, this.Configuration);
 
             #region Authentication
@@ -83,6 +85,14 @@ namespace Host
             })
             .AddScheme<TokenAuthenticationOptions, TokenAuthenticationHandler>(SchemesNamesConst.TokenAuthenticationDefaultScheme, o => { });
             #endregion
+
+            // Ativa o uso do token
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
         }
 
         /// <summary>

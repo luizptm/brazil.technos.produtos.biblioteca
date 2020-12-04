@@ -13,6 +13,7 @@ namespace Host.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize("Bearer")]
     public class ProdutoController : ControllerBase
     {
         /// <summary>
