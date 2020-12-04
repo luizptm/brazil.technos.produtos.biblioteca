@@ -1,17 +1,20 @@
 ﻿using Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AppService
 {
     public interface IProdutoAppService
     {
-        Produto Get(string codigo);
+        Produto Get(Int32 codigo);
+
+        List<Produto> GetAll();
 
         List<Produto> Find(Produto produto);
 
         Boolean Salvar(Produto produto);
+
+        Boolean Excluir(Int32 codigo);
 
         Boolean Excluir(Produto produto);
     }
