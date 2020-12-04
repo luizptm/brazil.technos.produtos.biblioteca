@@ -10,7 +10,7 @@ namespace Host.Controllers
     /// <summary>
     /// ProdutoApiController
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/produto")]
     [ApiController]
     public class ProdutoApiController : ControllerBase
     {
@@ -25,6 +25,12 @@ namespace Host.Controllers
         public ProdutoApiController(IProdutoAppService service)
         {
             this.service = service;
+        }
+
+        [HttpGet]
+        public String Hello()
+        {
+            return "Welcome aboard!";
         }
 
         /// <summary>
