@@ -13,10 +13,10 @@ namespace Test
         IProdutoController controller;
 
         [SetUp]
-        public void Setup()
+        public void Setup(ProdutoRepository data, ProdutoController controller)
         {
-            this.data = new ProdutoRepository();
-            this.controller = new ProdutoController(data);
+            this.data = data;
+            this.controller = controller;
         }
 
         [Test]

@@ -4,17 +4,6 @@
         <name>Host</name>
     </assembly>
     <members>
-        <member name="T:Host.Controllers.MainController">
-            <summary>
-            MainController
-            </summary>
-        </member>
-        <member name="M:Host.Controllers.MainController.Get">
-            <summary>
-            Get
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:Host.Controllers.ProdutoController">
             <summary>
             ProdutoController

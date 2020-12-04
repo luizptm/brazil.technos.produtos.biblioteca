@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -65,14 +66,17 @@ namespace Host
                 c.IncludeXmlComments(caminhoXmlDoc);
             });
 
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase("InMemoryDatabase"));
             services.AddScoped<ProdutoDbContext, ProdutoDbContext>();
             services.AddScoped<TipoProdutoDbContext, TipoProdutoDbContext>();
 
             services.AddTransient<IProdutoRepository, ProdutoRepository>();
             services.AddTransient<ITipoProdutoRepository, TipoProdutoRepository>();
 
-            services.AddSingleton<IProdutoAppService, ProdutoAppService>();
-            services.AddSingleton<IProdutoController, ProdutoController>();
+            services.AddScoped<IProdutoAppService, ProdutoAppService>();
+            services.AddScoped<IProdutoController, ProdutoController>();
+
             services.AddSingleton<ITokenAppService, TokenAppService>();
             services.AddSingleton<IApplicationManager, ApplicationManager>();
 

@@ -9,16 +9,16 @@ namespace Data.Repository
 {
     public class ProdutoRepository : IProdutoRepository
     {
-        private readonly ProdutoDbContext db;
+        private readonly ApplicationDbContext db;
 
-        public ProdutoRepository()
+        public ProdutoRepository(ApplicationDbContext db)
         {
-            db = new ProdutoDbContext();
+            this.db = db;
         }
 
         Produto IRepository<Produto>.Get(int codigo)
         {
-            var data = this.db.Produtos.Find(codigo.ToString());
+            var data = this.db.Produtos.Find(codigo);
             return data;
         }
 
@@ -78,7 +78,7 @@ namespace Data.Repository
             }
             else
             {
-                db.Entry(produto).State = EntityState.Modified;
+                db.Entry(produto).State = Microsoft.EntityFrameworkCore.EntityState.Modified ;
             }
             db.SaveChanges();
             return true;

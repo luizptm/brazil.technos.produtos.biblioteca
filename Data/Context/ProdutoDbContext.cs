@@ -1,19 +1,19 @@
-﻿using Model;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Model;
+
 
 namespace Data
 {
     public class ProdutoDbContext : DbContext
     {
-        public ProdutoDbContext()
-        : base("name=GrupoTechnos")
-            {
-            }
+        public ProdutoDbContext(DbContextOptions options) :
+            base(options)
+        { }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            modelBuilder.Entity<Produto>()
+                .HasKey(p => p.Codigo);
         }
 
         public DbSet<Produto> Produtos { get; set;  }

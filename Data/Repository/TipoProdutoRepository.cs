@@ -11,9 +11,9 @@ namespace Data.Repository
     {
         private readonly TipoProdutoDbContext db;
 
-        public TipoProdutoRepository()
+        public TipoProdutoRepository(TipoProdutoDbContext db)
         {
-            db = new TipoProdutoDbContext();
+            this.db = db;
         }
 
         TipoProduto IRepository<TipoProduto>.Get(int id)
@@ -73,7 +73,7 @@ namespace Data.Repository
             }
             else
             {
-                db.Entry(tipoProduto).State = EntityState.Modified;
+                db.Entry(tipoProduto).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             }
             db.SaveChanges();
             return true;
